@@ -1,30 +1,22 @@
-import os
-# MANDATORY: Set these BEFORE any imports
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-
 import streamlit as st
+import tensorflow as tf
 import numpy as np
 from PIL import Image
 
-# Import TensorFlow after setting environment variables
-import tensorflow as tf
-from tensorflow import keras
-
-# Verify Keras is accessible
-st.sidebar.write(f"TensorFlow version: {tf.__version__}")
+# Display versions for debugging
+st.sidebar.write(f"TensorFlow: {tf.__version__}")
+st.sidebar.write(f"Python: 3.10")
 
 # 1. Load trained model
 @st.cache_resource
 def load_my_model():
-    return keras.models.load_model("mask_detector.h5", compile=False)
+    return tf.keras.models.load_model("mask_detector.h5", compile=False)
 
 try:
     model = load_my_model()
-    st.sidebar.success("✅ Model loaded successfully")
+    st.sidebar.success("✅ Model loaded")
 except Exception as e:
     st.error(f"Model Load Error: {e}")
-    st.error(f"TensorFlow version: {tf.__version__}")
     st.stop()
 
 # 2. Class names
